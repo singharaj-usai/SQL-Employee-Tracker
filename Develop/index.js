@@ -67,9 +67,42 @@ choice();
 //    console.log("*********");
 //  });
 
+//Notes from SQL search db.query in the search bar
+
 const showDepartments = () => {
-connection.query('SELECT * FROM department', function (err, results) {
-    console.log(results);
-    choice();
-  });
+    connection.query('SELECT * FROM department', function (err, results) {
+        console.log(results);
+        choice();
+    });
 }
+
+const showAllRoles = () => {
+    connection.query('SELECT * FROM role', function (err, results) {
+        console.log(results);
+        choice();
+    });
+}
+
+const showAllEmployees = () => {
+    connection.query('SELECT employee.id, employee.first_name', 'employee.last_name', 'roles.id', function (err, results) {
+        console.log(results);
+        choice();
+    });
+}   
+
+const addDepartment = () => {
+    inquirer.prompt([
+        {
+            type: 'input',
+            message: 'What department',
+            name: 'department',
+        }
+    ]).then(function (ok) {
+
+   
+    connection.query('INSERT INTO department(name) VALUES(?)',
+     [ok.name], function (err, results) {
+        console.log(results);
+        showDepartments();
+    })});
+}  
