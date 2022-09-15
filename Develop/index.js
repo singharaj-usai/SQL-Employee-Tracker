@@ -1,20 +1,20 @@
-const mysql = require('mysql2');
+//const mysql = require('mysql2');
 const inquirer = require('inquirer');
 
 const connection = mysql.createConnection({
-  host: 'localhost',
+    host: 'localhost',
 
-  // Your port; if not 3306
-  port: 3306,
+    // Your port; if not 3306
+    port: 3306,
 
-  // Your username
-  user: 'root',
+    // Your username
+    user: 'root',
 
-  // Be sure to update with your own MySQL password!
-  password: 'password',
-  database: 'workplace_db',
+    // Be sure to update with your own MySQL password!
+    password: 'password',
+    database: 'workplace_db',
 },
-console.log (`Connected to workplace_db`)
+    console.log(`Connected to workplace_db`)
 );
 
 //THEN I am presented with the following options: 
@@ -24,38 +24,40 @@ console.log (`Connected to workplace_db`)
 const choice = () => {
     inquirer.prompt([
         {
-        type: 'list',
-        message: 'What is ur choice',
-        name: 'choices',
-        choices: [
-            'View All Departments', 'View All Roles',
-            'View All Employees', 'Add A Department',
-            'Add A Role', 'Add An Employee', 'Update An Employee Role'
-        ]
-    }
+            type: 'list',
+            message: 'What is ur choice',
+            name: 'choices',
+            choices: [
+                'View All Departments', 'View All Roles',
+                'View All Employees', 'Add A Department',
+                'Add A Role', 'Add An Employee', 'Update An Employee Role'
+            ]
+        }
     ]).then(function (choice) {
-       switch (choice) {
-        case 'View All Departments':
-            showDepartments();
-            break;
+        switch (choice) {
+            case 'View All Departments':
+                showDepartments();
+                break;
             case 'View All Roles':
                 showAllRoles();
-                break;   
-                case 'View All Employees':
-                    showAllEmployees();
-                    break;
-                    case 'Add A Department':
-                        addDepartment();
-                        break;
-                        case 'Add A Role':
-                            addRole();
-                            break;
-                            case 'Add An Employee':
-                                addEmployee();
-                                break;
-                                case 'Update An Employee Role':
-                                    updateEmployee();
-                                    break;
-       } 
-    })   
+                break;
+            case 'View All Employees':
+                showAllEmployees();
+                break;
+            case 'Add A Department':
+                addDepartment();
+                break;
+            case 'Add A Role':
+                addRole();
+                break;
+            case 'Add An Employee':
+                addEmployee();
+                break;
+            case 'Update An Employee Role':
+                updateEmployee();
+                break;
+        }
+    })
 }
+
+choice();
