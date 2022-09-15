@@ -61,3 +61,15 @@ const choice = () => {
 }
 
 choice();
+
+//db.query('SELECT first_name, last_name FROM students', function (err, results) {
+//    console.log(results);
+//    console.log("*********");
+//  });
+
+const showDepartments = () => {
+connection.query('SELECT * FROM department', function (err, results) {
+    console.log(results);
+    choice();
+  });
+}
