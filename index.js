@@ -37,6 +37,7 @@ function choice() {
           "Add A Role",
           "Add An Employee",
           "Update An Employee Role",
+          "EXIT"
         ],
       },
     ])
