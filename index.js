@@ -37,7 +37,7 @@ function choice() {
           "Add A Role",
           "Add An Employee",
           "Update An Employee Role",
-          "EXIT"
+          "EXIT",
         ],
       },
     ])
@@ -128,52 +128,54 @@ const addDepartment = () => {
 };
 
 const addRole = () => {
-  inquirer
-    .prompt([
-      {
-        name: "newRole",
-        type: "input",
-        message: "Enter name of new role?",
-      },
-      {
-        name: "salary",
-        type: "input",
-        message: "What is the salary of this role? (Enter a number)",
-      },
-      {
-        name: "department",
-        type: "list",
-        choices: function () {
-          var deptArry = [];
-          for (let i = 0; i < res.length; i++) {
-            deptArry.push(res[i].name);
-          }
-          return deptArry;
-        },
-      },
-    ])
-    .then(function (entry) {
-      let department_id;
-      for (let a = 0; a < res.length; a++) {
-        if (res[a].name == entry.department) {
-          department_id = res[a].id;
-        }
-      }
-
-      connection.query(
-        "INSERT INTO role SET ?",
+  connection.query("SELECT * FROM department", function (err, results) {
+    inquirer
+      .prompt([
         {
-          title: entry.newRole,
-          salary: entry.salary,
-          department_id: department_id,
+          name: "newRole",
+          type: "input",
+          message: "Enter name of new role?",
         },
-        connection.query("SELECT * FROM department", function (err, results) {
-          if (err) throw err;
-          console.log(results);
-          choice();
-        })
-      );
-    });
+        {
+          name: "salary",
+          type: "input",
+          message: "What is the salary of this role? (Enter a number)",
+        },
+        {
+          name: "department",
+          type: "list",
+          choices: function () {
+            var deptArry = [];
+            for (let i = 0; i < results.length; i++) {
+              deptArry.push(results[i].name);
+            }
+            return deptArry;
+          },
+        },
+      ])
+      .then(function (entry) {
+        let department_id;
+        for (let a = 0; a < results.length; a++) {
+          if (results[a].name == entry.department) {
+            department_id = results[a].id;
+          }
+        }
+
+        connection.query(
+          "INSERT INTO role SET ?",
+          {
+            title: entry.newRole,
+            salary: entry.salary,
+            department_id: department_id,
+          },
+          function (err, results) {
+            if (err) throw err;
+            console.log(results);
+            choice();
+          }
+        );
+      });
+  });
 };
 
 const addEmployee = () => {
@@ -235,8 +237,8 @@ const updateEmployee = () => {
             type: "rawlist",
             choices: function () {
               var lastName = [];
-              for (var i = 0; i < res.length; i++) {
-                lastName.push(res[i].last_name);
+              for (var i = 0; i < results.length; i++) {
+                lastName.push(results[i].last_name);
               }
               return lastName;
             },
@@ -273,10 +275,10 @@ const updateEmployee = () => {
 //callbacks
 var roleArray = [];
 const selectRole = () => {
-  connection.query("SELECT * FROM role", function (err, res) {
+  connection.query("SELECT * FROM role", function (err, results) {
     if (err) throw err;
-    for (var i = 0; i < res.length; i++) {
-      roleArray.push(res[i].title);
+    for (var i = 0; i < results.length; i++) {
+      roleArray.push(results[i].title);
     }
   });
   return roleArray;
@@ -286,10 +288,10 @@ var managersArray = [];
 const selectManager = () => {
   connection.query(
     "SELECT first_name, last_name FROM employee WHERE manager_id IS NULL",
-    function (err, res) {
+    function (err, results) {
       if (err) throw err;
-      for (var i = 0; i < res.length; i++) {
-        managersArray.push(res[i].first_name);
+      for (var i = 0; i < results.length; i++) {
+        managersArray.push(results[i].first_name);
       }
     }
   );
