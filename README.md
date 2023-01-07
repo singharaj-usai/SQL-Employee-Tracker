@@ -43,7 +43,7 @@
 ![](./Screenshots/Screenshot%202022-11-16%20230653.png)
 
 * Select any of the prompted options
-  * Update employee roles, Add employee, etc
+  * Update employee roles, Add employee, View all etc
 ![](./Screenshots/Screenshot%202022-11-16%20230706.png)
 
 ## Links
