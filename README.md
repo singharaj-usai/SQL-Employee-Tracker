@@ -43,7 +43,7 @@
 ![](./Screenshots/Screenshot%202022-11-16%20230653.png)
 
 * Select any of the prompted options
-  * **NOTE** Editing employee role is currently broken, everything else works.
+  * Update employee roles, Add employee, etc
 ![](./Screenshots/Screenshot%202022-11-16%20230706.png)
 
 ## Links
