@@ -225,52 +225,48 @@ const addEmployee = () => {
 };
 
 const updateEmployee = () => {
-  connection.query(
-    "SELECT employee.last_name, role.title FROM employee JOIN role ON employee.role_id = role.id;",
-    function (err, results) {
-      if (err) throw err;
-      console.log(results);
-      inquirer
-        .prompt([
-          {
-            name: "lastName",
-            type: "rawlist",
-            choices: function () {
-              var lastName = [];
-              for (var i = 0; i < results.length; i++) {
-                lastName.push(results[i].last_name);
-              }
-              return lastName;
-            },
-            message: "What is the Employee's last name? ",
-          },
-          {
-            name: "role",
-            type: "rawlist",
-            message: "What is the Employees new title? ",
-            choices: selectRole(),
-          },
-        ])
-        .then(function (val) {
-          var roleId = selectRole().indexOf(val.role) + 1;
-          connection.query(
-            "UPDATE employee SET WHERE ?",
-            {
-              last_name: val.lastName,
-            },
-            {
-              role_id: roleId,
-            },
-            function (err, results) {
-              if (err) throw err;
-              console.log(results);
-              choice();
-            }
-          );
-        });
-    }
-  );
+    connection.query(
+        "SELECT employee.last_name, role.title FROM employee JOIN role ON employee.role_id = role.id;",
+        function (err, results) {
+            if (err) throw err;
+            console.log(results);
+            inquirer
+                .prompt([
+                    {
+                        name: "lastName",
+                        type: "rawlist",
+                        choices: function () {
+                            var lastName = [];
+                            for (var i = 0; i < results.length; i++) {
+                                lastName.push(results[i].last_name);
+                            }
+                            return lastName;
+                        },
+                        message: "What is the Employee's last name? ",
+                    },
+                    {
+                        name: "role",
+                        type: "rawlist",
+                        message: "What is the Employees new title? ",
+                        choices: selectRole(),
+                    },
+                ])
+                .then(function (val) {
+                    var roleId = selectRole().indexOf(val.role) + 1;
+                    connection.query(
+                        "UPDATE employee SET role_id = ? WHERE last_name = ?",
+                        [roleId, val.lastName],
+                        function (err, results) {
+                            if (err) throw err;
+                            console.log(results);
+                            choice();
+                        }
+                    );
+                });
+        }
+    );
 };
+
 
 //callbacks
 var roleArray = [];
